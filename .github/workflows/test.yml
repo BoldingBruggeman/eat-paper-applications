@@ -33,3 +33,9 @@ jobs:
           ./launcher.sh
           cd ../FiguresScripts
           ./launcher.sh
+      - name: "Application: Parameters"
+        run: |
+          conda activate eat
+          cd Parameters
+          ./launcher.sh
+  
