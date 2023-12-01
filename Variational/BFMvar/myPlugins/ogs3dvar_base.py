@@ -5,7 +5,7 @@ import datetime
 #from my_plugins.IO import readtxt
 from typing import MutableMapping, Any, Optional#, Dict
 from collections import OrderedDict
-from scipy import interpolate
+#from scipy import interpolate
 
 import sys
 

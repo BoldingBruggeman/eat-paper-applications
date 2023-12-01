@@ -7,7 +7,8 @@ instances:
   light:
     model: ogs/light
     parameters:
-       pEPSCHL: 0.0088                                      # attenuation by Chlorophyll (m^2/mg Chl), default= 0.0088
+       pEPSCHL: 0.080                                       # attenuation by Chlorophyll (m^2/mg Chl), default= 0.0088
+       pEPSCDOM: 0.01476                                    # attenuation by CDOM (m^2/mg C), default= 0.0646
        EPS0r: 0.04                                          # background shortwave attenuation (1/m), default = 0.04
        pEIR_eow: 0.4                                        # photosynthetically active fraction of shortwave radiation (-), default = 0.5
     coupling:
@@ -15,6 +16,9 @@ instances:
        P2chl: P2/Chl
        P3chl: P3/Chl
        P4chl: P4/Chl
+       X1c: X1/c
+       X2c: X2/c
+       X3c: X3/c       
   N1:
     long_name: phosphate
     model: ogs/bfm_pelagic_base
@@ -88,29 +92,31 @@ instances:
     parameters:
       composition: cnp                                     # elemental composition
     initialization:
-      c: 40.0                                         # Dissolved Organic Carbon (mg C /m^3)
-      n: 0.504                                        # Dissolved Organic Nitrogen (mmol N /m^3)
-      p: 0.031                                        # Dissolved Organic Phosphorus (mmol P /m^3)
+      c: 80.0                                         # Dissolved Organic Carbon (mg C /m^3)
+#      n: 1.260E-002                                   # Dissolved Organic Nitrogen (mmol N /m^3)
+#      p: 7.8620E-004                                  # Dissolved Organic Phosphorus (mmol P /m^3)
+      n: 1.008                                        # adjusted for c=80 instead c=1
+      p: 0.062                                        # adjusted for c=80 instead c=1      
   R2:
     long_name: Dissolved Organic carbon semi-Labile
     model: ogs/bfm_pelagic_base
     parameters:
       composition: c                                   # elemental composition
     initialization:
-      c: 200                                           # Dissolved Organic Carbon (mg C /m^3)
+      c: 400.0                                         # Dissolved Organic Carbon (mg C /m^3)
   R3:
     long_name: Dissolved Organic carbon semi-refractory
     model: ogs/bfm_pelagic_base
     parameters:
       composition: c                                   # elemental composition
     initialization:
-      c: 480                                         # Dissolved Organic Carbon (mg C /m^3)
+      c: 480.0                                         # Dissolved Organic Carbon (mg C /m^3)
   R6: 
     long_name: Particulate Organic carbon 
     model: ogs/bfm_pelagic_base
     parameters:
       composition: cpns                                # elemental composition
-      rm:  3.000                                       # Sinking Velocity
+      rm:  4.25                                       # Sinking Velocity
     initialization:
       c: 1.0                                          # POC (mg C   /m^3)
       n: 1.260E-002                                   # PON (mmol N /m^3)
@@ -136,7 +142,7 @@ instances:
     parameters:
       composition: c                                     # elemental composition
     initialization:
-      c:  1.000000000000000E-000
+      c:  1.250000000000000E-000
 #   ---------------------- P1 Diatom ----------------------
   P1:
     long_name: diatoms
@@ -146,12 +152,12 @@ instances:
       p_q10:   2.0                          # [-]            Characteristic Q10 coefficient
       p_temp:  0.0                          # [-]            Cut-off threshold for temperature factor
       p_sum:   2.5                          # [1/d]          maximum specific productivity at reference temperature (1/d)
-      p_srs:   0.1                          # [1/d]          Respiration rate at 10 degrees C
+      p_srs:   0.076                        # [1/d]          Respiration rate at 10 degrees C
       p_sdmo:  0.0                          # [1/d]          Max.specific nutrient-stress lysis rate
       p_thdo:  0.0                          # [-]            Half saturation constant for nutrient stress lysis
       p_seo:   0.0                          # [1/d]          Extra lysis rate (biomass density-dependent)
       p_sheo:  0.0                          # [mgC/3]        Half saturation constant for extra lysis
-      p_pu_ea: 0.05                         # [-]            Excreted fraction of primary production
+      p_pu_ea: 0.10                         # [-]            Excreted fraction of primary production
       p_pu_ra: 0.1                          # [-]            Activity respiration fraction
       p_switchDOC: 2                        # [1-3]          Switch for the type of DOC excretion
                                             #  This choice must be consistent with bacteria
@@ -176,7 +182,7 @@ instances:
       p_xqn: 2.0                            # [-]            Multiplication factor for luxury storage
 #                   ---- P limitation control ----
       p_qup: 0.0025                         # [m3/mgC/d]     Membrane affinity for P
-      p_qplc: 0.0004288                     # [mmolN/mgC]    minimum phosphorus to carbon ratio (mmol P/mg C)
+      p_qplc: 0.00057                       # [mmolN/mgC]    minimum phosphorus to carbon ratio (mmol P/mg C)
       p_qpcPPY: 0.000786                    # [mmolP/mgC]    Reference quotum P:C
       p_xqp: 2.0                            # [-]            Multiplication factor for luxury storage
 #                   ---- Si limitation control ----
@@ -186,22 +192,25 @@ instances:
       p_chPs: 0.3                           # [mmolSi/m3]    Half saturation conc. for dissolved Si limitation
       p_Contois: 0.0                        # [>=0]          If >0, use Contois formulation
       p_qus: 0.0025                         # [m3/mgC/d]     Membrane affinity for Si
-      p_qslc: 0.007                         # [mmolSi/mgC]   maximum silicate to carbon ratio (mmol Si/mg C)
-      use_Si: .TRUE.                          # use silicate, default = false
+      p_qslc: 0.007                         # [mmolSi/mgC]   minimum silicate to carbon ratio (mmol Si/mg C)
+      use_Si: .TRUE.                        # use silicate, default = false
       p_qscPPY: 0.01                        # [mmolSi/mgC]   Reference quotum Si:C
 #                   ---- nutrient stressed sinking ----
       p_esNI: 0.7                           # [-]            Nutrient stress threshold for sinking
       p_res: 5.0                            # [m/d]          Maximum Sinking vel city (m/d)
 #                   ---- Calcification ----
       p_caco3r: 0.0                         # [-]            Reference PIC:POC (rain) ratio
+#                   ---- CDOM production ----
+      p_fX1p: 0.00                          # [-]            fraction of colored labile DOC
+      p_fX2p: 0.080                         # [-]            fraction of colored semi-labile DOC
 #              --------- Chlorophyll parameters -----------
       p_switchChl: 2                        # [1-4]          Switch for Chla-a synthesis 
       p_sdchl: 0.2                          # [1/d]          Specific turnover rate for Chla 
-      p_alpha_chl: 1.38e-5                  # [mgC s m2/mgChl/uE]     Initial slope of the P-E curve
-      p_quantum_yield: 4.8e-4               # [mgC / uE]     Photochemical efficiency
+      p_alpha_chl: 2.61e-5                  # [mgC s m2/mgChl/uE]     Initial slope of the P-E curve
+      p_quantum_yield: 0.750e-3             # [mgC / uE]     Photochemical efficiency
       p_Esource: 6                          # [1-6]          source of light for PP, 1=absorbed by P1, 5=scalar, 6=mono
                                               
-      p_qlcPPY: 0.02                        # [mgChla/mgC]   Reference quotum Chla:C 
+      p_qlcPPY: 0.026                       # [mgChla/mgC]   Reference quotum Chla:C 
       p_epsChla: 0.03                       # [m2/mgChla]    Chla-specific extinction coefficient
       p_tochl_relt: 0.0                     # [1/d]        Relaxation rate towards maximum Chla:C
       p_EpEk_or: 0.0                        # [-]            Optimal value of E_PAR/E_K
@@ -217,7 +226,7 @@ instances:
       c: 8.0                                               # carbon (mg C/m^3)
       n: 0.1008                                            # nitrogen (mmol N/m^3)
       p: 0.006288                                          # phosphate (mmol N/m^3)
-      s: 0.08                                             # silicate (mmol Si/m^3)
+      s: 0.08                                              # silicate (mmol Si/m^3)
       Chl: 0.16                                            # chlorophyll a (mg/m^3)
     coupling:
       N1p: N1/p                                            # phosphate (mmol P/m^3)
@@ -245,15 +254,15 @@ instances:
     model: ogs/Phyto
     parameters:
 #             --------- Physiological parameters -----------------
-      p_q10:   2.0                          # [-]            Characteristic Q10 coefficient
+      p_q10:   2.25                         # [-]            Characteristic Q10 coefficient
       p_temp:  0.0                          # [-]            Cut-off threshold for temperature factor
-      p_sum:   3.0                          # [1/d]          maximum specific productivity at reference temperature (1/d)
-      p_srs:   0.05                          # [1/d]          Respiration rate at 10 degrees C
+      p_sum:   2.6                          # [1/d]          maximum specific productivity at reference temperature (1/d)
+      p_srs:   0.09                         # [1/d]          Respiration rate at 10 degrees C
       p_sdmo:  0.0                          # [1/d]          Max.specific nutrient-stress lysis rate
       p_thdo:  0.0                          # [-]            Half saturation constant for nutrient stress lysis
       p_seo:   0.0                          # [1/d]          Extra lysis rate (biomass density-dependent)
       p_sheo:  0.0                          # [mgC/3]        Half saturation constant for extra lysis
-      p_pu_ea: 0.1                          # [-]            Excreted fraction of primary production
+      p_pu_ea: 0.15                         # [-]            Excreted fraction of primary production
       p_pu_ra: 0.1                          # [-]            Activity respiration fraction
       p_switchDOC: 2                        # [1-3]          Switch for the type of DOC excretion
                                             #  This choice must be consistent with bacteria
@@ -277,9 +286,9 @@ instances:
       p_qncPPY: 0.0126                      # [mmolN/mgC]    Reference quotum N:C
       p_xqn: 2.0                            # [-]            Multiplication factor for luxury storage
 #                   ---- P limitation control ----
-      p_qup: 0.0025                         # [m3/mgC/d]     Membrane affinity for P
-      p_qplc: 0.0004288                     # [mmolN/mgC]    minimum phosphorus to carbon ratio (mmol P/mg C)
-      p_qpcPPY: 0.000786                    # [mmolP/mgC]    Reference quotum P:C
+      p_qup: 0.0035                         # [m3/mgC/d]     Membrane affinity for P
+      p_qplc: 0.000352                      # [mmolN/mgC]    minimum phosphorus to carbon ratio (mmol P/mg C)
+      p_qpcPPY: 0.000556                    # [mmolP/mgC]    Reference quotum P:C
       p_xqp: 2.0                            # [-]            Multiplication factor for luxury storage
 #                   ---- Si limitation control ----
 #     Silicon absent in this PFT                            
@@ -289,14 +298,17 @@ instances:
 #                   ---- Calcification ----
       use_CaCO3: .TRUE.                     #                use CaCO3, default = false
       p_caco3r: 0.3                         # [-]            Reference PIC:POC (rain) ratio
+#                   ---- CDOM production ----
+      p_fX1p: 0.00                          # [-]            fraction of colored labile DOC
+      p_fX2p: 0.043                         # [-]            fraction of colored semi-labile DOC
 #              --------- Chlorophyll parameters -----------
       p_switchChl: 2                        # [1-4]          Switch for Chla-a synthesis 
       p_sdchl: 0.2                          # [1/d]          Specific turnover rate for Chla 
-      p_alpha_chl: 0.46e-5                  # [mgC s m2/mgChl/uE]     Initial slope of the P-E curve
-      p_quantum_yield: 4.8e-4               # [mgC / uE]     Photochemical efficiency
+      p_alpha_chl: 0.53e-5                  # [mgC s m2/mgChl/uE]     Initial slope of the P-E curve
+      p_quantum_yield: 0.198e-3             # [mgC / uE]     Photochemical efficiency
       p_Esource: 6                          # [1-6]          source of light for PP, 2=absorbed by P2, 5=scalar, 6=mono
                                               
-      p_qlcPPY: 0.02                        # [mgChla/mgC]   Reference quotum Chla:C 
+      p_qlcPPY: 0.045                        # [mgChla/mgC]   Reference quotum Chla:C 
       p_epsChla: 0.03                       # [m2/mgChla]    Chla-specific extinction coefficient
       p_tochl_relt: 0.0                     # [1/d]        Relaxation rate towards maximum Chla:C
       p_EpEk_or: 0.0                        # [-]            Optimal value of E_PAR/E_K
@@ -340,12 +352,12 @@ instances:
       p_q10:   2.0                          # [-]            Characteristic Q10 coefficient
       p_temp:  0.75                         # [-]            Cut-off threshold for temperature factor
       p_sum:   3.5                          # [1/d]          maximum specific productivity at reference temperature (1/d)
-      p_srs:   0.1                           # [1/d]          Respiration rate at 10 degrees C
+      p_srs:   0.1                          # [1/d]          Respiration rate at 10 degrees C
       p_sdmo:  0.0                          # [1/d]          Max.specific nutrient-stress lysis rate
       p_thdo:  0.0                          # [-]            Half saturation constant for nutrient stress lysis
       p_seo:   0.0                          # [1/d]          Extra lysis rate (biomass density-dependent)
       p_sheo:  0.0                          # [mgC/3]        Half saturation constant for extra lysis
-      p_pu_ea: 0.1                          # [-]            Excreted fraction of primary production
+      p_pu_ea: 0.15                         # [-]            Excreted fraction of primary production
       p_pu_ra: 0.2                          # [-]            Activity respiration fraction
       p_switchDOC: 2                        # [1-3]          Switch for the type of DOC excretion
                                             #  This choice must be consistent with bacteria
@@ -371,7 +383,7 @@ instances:
 #                   ---- P limitation control ----
       p_qup: 0.0025                         # [m3/mgC/d]     Membrane affinity for P
       p_qplc: 0.0004288                     # [mmolN/mgC]    minimum phosphorus to carbon ratio (mmol P/mg C)
-      p_qpcPPY: 0.000786                    # [mmolP/mgC]    Reference quotum P:C
+      p_qpcPPY: 0.00072                     # [mmolP/mgC]    Reference quotum P:C
       p_xqp: 2.0                            # [-]            Multiplication factor for luxury storage
 #                   ---- Si limitation control ----
 #     Silicon absent in this PFT                            
@@ -380,14 +392,16 @@ instances:
       p_res: 0.0                            # [m/d]          Maximum Sinking vel city (m/d)
 #                   ---- Calcification ----
       p_caco3r: 0.0                         # [-]            Reference PIC:POC (rain) ratio
+#                   ---- CDOM production ----
+      p_fX1p: 0.00                          # [-]            fraction of colored labile DOC
+      p_fX2p: 0.039                         # [-]            fraction of colored semi-labile DOC
 #              --------- Chlorophyll parameters -----------
       p_switchChl: 2                        # [1-4]          Switch for Chla-a synthesis 
       p_sdchl: 0.2                          # [1/d]          Specific turnover rate for Chla 
-      p_alpha_chl: 1.52e-5                  # [mgC s m2/mgChl/uE]     Initial slope of the P-E curve
-      p_quantum_yield: 4.8e-4               # [mgC / uE]     Photochemical efficiency
-      p_Esource: 6                          # [1-6]          source of light for PP, 3=absorbed by P3, 5=scalar, 6=mono
-                                              
-      p_qlcPPY: 0.02                        # [mgChla/mgC]   Reference quotum Chla:C 
+      p_alpha_chl: 3.02e-5                  # [mgC s m2/mgChl/uE]     Initial slope of the P-E curve
+      p_quantum_yield: 0.990e-3             # [mgC / uE]     Photochemical efficiency
+      p_Esource: 6                          # [1-6]          source of light for PP, 3=absorbed by P3, 5=scalar, 6=mono       
+      p_qlcPPY: 0.014                       # [mgChla/mgC]   Reference quotum Chla:C 
       p_epsChla: 0.03                       # [m2/mgChla]    Chla-specific extinction coefficient
       p_tochl_relt: 0.0                     # [1/d]        Relaxation rate towards maximum Chla:C
       p_EpEk_or: 0.0                        # [-]            Optimal value of E_PAR/E_K
@@ -431,12 +445,12 @@ instances:
       p_q10:   2.0                          # [-]            Characteristic Q10 coefficient
       p_temp:  0.0                          # [-]            Cut-off threshold for temperature factor
       p_sum:   1.5                          # [1/d]          maximum specific productivity at reference temperature (1/d)
-      p_srs:   0.1                           # [1/d]          Respiration rate at 10 degrees C
+      p_srs:   0.1                          # [1/d]          Respiration rate at 10 degrees C
       p_sdmo:  0.0                          # [1/d]          Max.specific nutrient-stress lysis rate
       p_thdo:  0.0                          # [-]            Half saturation constant for nutrient stress lysis
       p_seo:   0.0                          # [1/d]          Extra lysis rate (biomass density-dependent)
       p_sheo: 100.0                         # [mgC/3]        Half saturation constant for extra lysis
-      p_pu_ea: 0.15                         # [-]            Excreted fraction of primary production
+      p_pu_ea: 0.20                         # [-]            Excreted fraction of primary production
       p_pu_ra: 0.1                          # [-]            Activity respiration fraction
       p_switchDOC: 2                        # [1-3]          Switch for the type of DOC excretion
                                             #  This choice must be consistent with bacteria
@@ -471,16 +485,18 @@ instances:
       p_res: 2.5                            # [m/d]          Maximum Sinking vel city (m/d)
 #                   ---- Calcification ----
       p_caco3r: 0.0                         # [-]            Reference PIC:POC (rain) ratio
+#                   ---- CDOM production ----
+      p_fX1p: 0.00                          # [-]            fraction of colored labile DOC
+      p_fX2p: 0.053                         # [-]            fraction of colored semi-labile DOC
 #              --------- Chlorophyll parameters -----------
       p_switchChl: 2                        # [1-4]          Switch for Chla-a synthesis 
       p_sdchl: 0.2                          # [1/d]          Specific turnover rate for Chla 
       p_alpha_chl: 0.68e-5                  # [mgC s m2/mgChl/uE]     Initial slope of the P-E curve
-      p_quantum_yield: 4.8e-4               # [mgC / uE]     Photochemical efficiency
+      p_quantum_yield: 0.257e-3             # [mgC / uE]     Photochemical efficiency
       p_Esource: 6                          # [1-6]          source of light for PP, 4=absorbed by P4, 5=scalar, 6=mono
-                                              
-      p_qlcPPY: 0.02                        # [mgChla/mgC]   Reference quotum Chla:C 
+      p_qlcPPY: 0.019                       # [mgChla/mgC]   Reference quotum Chla:C 
       p_epsChla: 0.03                       # [m2/mgChla]    Chla-specific extinction coefficient
-      p_tochl_relt: 0.0                     # [1/d]        Relaxation rate towards maximum Chla:C
+      p_tochl_relt: 0.0                     # [1/d]          Relaxation rate towards maximum Chla:C
       p_EpEk_or: 0.0                        # [-]            Optimal value of E_PAR/E_K
 #              --------- Light parameters ERSEM-II -----------
       p_iswLtyp:  5                         # [0-6]          Shape of the productivity function
@@ -531,11 +547,11 @@ instances:
       p_sd2 : 0.0  # [1/d]            Density dependent specific mortality rate
       p_suhR1 : 0.5  # [1/d]            Specific potential uptake for nutrient-rich DOM
       p_sulR1 : 0.0  #  [1/d]            Specific potential uptake for nutrient-poor DOM
-      p_suR2 : 0.25 #  [1/d]            Specific potential uptake for semi-labile DOC
+      p_suR2 : 0.05  #  [1/d]            Specific potential uptake for semi-labile DOC
       p_suR3 : 0.0  #   [1/d]            Specific potential uptake for semi-refractory DOC
-      p_suR6 : 0.1  #    [1/d]            Specific potential uptake for POM (1/d)
+      p_suR6 : 0.1  #   [1/d]            Specific potential uptake for POM (1/d)
       p_sum : 8.38 #    [1/d]            Potential specific growth rate
-      p_pu_ra : 0.6  #  [-]              Activity respiration fraction
+      p_pu_ra : 0.76  #  [-]              Activity respiration fraction
       p_pu_ra_o : 0.2  #  [-]              Additional respiration fraction at low O2 conc
       p_srs : 0.01 #  [1/d]            Specific rest respiration 
       p_qncPBA : 0.017 #  [mmolN/mgC]      Optimal N/C ratio 
@@ -551,10 +567,13 @@ instances:
       p_ruep : 1.0    #  [1/d]            Relaxation timescale for P uptake/remin.
       p_pu_ea_R3 : 0.0   #  [-]              Excretion of semi-refractory DOC
       p_qro : 0.5   #  [mmolHS-/mmolO2]  Stoichiometric coefficient for anaerobic reactions
-      p_pe_R1c: 0.60  #[-]           Fractional content of C in cytoplasm
-      p_pe_R1n: 0.72  #[-]           Fractional content of N in cytoplasm
-      p_pe_R1p: 0.832 #[-]           Fractional content of P in cytoplasm
-
+      p_pe_R1c: 0.60  # [-]           Fractional content of C in cytoplasm
+      p_pe_R1n: 0.72  # [-]           Fractional content of N in cytoplasm
+      p_pe_R1p: 0.832 # [-]           Fractional content of P in cytoplasm
+#                   ---- CDOM production ----
+      p_fX1b: 0.00     # [-]          fraction of colored labile DOC
+      p_fX2b: 0.02     # [-]          fraction of colored semi-labile DOC
+      p_fX3b: 0.018    # [-]          fraction of colored semi-refractory DOC
     initialization:
       c: 1.0                                               # carbon (mg C/m^3)
       n: 1.700000000000000E-002                            # nitrogen (mmol N/m^3)
@@ -587,7 +606,7 @@ instances:
 #             --------- Physiological parameters -----------------
       p_q10:     2.0     # [-]           Characteristic Q10 coefficient
       p_srs:     0.02    # [1/d]         Respiration rate at 10 degrees Celsius
-      p_sum:     2.0     # [1/d]         Potential growth rate
+      p_sum:     2.71    # [1/d]         Potential growth rate
       p_sdo:     0.05    # [1/d]         Mortality rate due to oxygen limitation
       p_sd:      0.0     # [1/d]         Temperature independent mortality rate
       p_pu:      0.5     # [-]           Assimilation efficiency
@@ -625,7 +644,8 @@ instances:
 #--------------------------------------------------------------------
       p_pe_R1c: 0.60     # [-]           Fractional content of C in cytoplasm
       p_pe_R1n: 0.72     # [-]           Fractional content of C in cytoplasm
-      p_pe_R1p: 0.832     # [-]           Fractional content of C in cytoplasm
+      p_pe_R1p: 0.832    # [-]           Fractional content of C in cytoplasm
+      p_fX1z: 0.018      # [-]           fraction of colored labile DOC      
     initialization:
       c: 1.0                             # carbon (mg C/m^3)
       n: 0.0167                          # nitrogen (mmol N/m^3)
@@ -661,7 +681,7 @@ instances:
 #             --------- Physiological parameters -----------------
       p_q10:     2.0     # [-]           Characteristic Q10 coefficient
       p_srs:     0.02    # [1/d]         Respiration rate at 10 degrees Celsius
-      p_sum:     5.0     # [1/d]         Potential growth rate
+      p_sum:     3.88    # [1/d]         Potential growth rate
       p_sdo:     0.05    # [1/d]         Mortality rate due to oxygen limitation
       p_sd:      0.0     # [1/d]         Temperature independent mortality rate
       p_pu:      0.3     # [-]           Assimilation efficiency
@@ -699,11 +719,12 @@ instances:
 #-------------------------------------------------------------------- 
       p_pe_R1c: 0.60     # [-]           Fractional content of C in cytoplasm
       p_pe_R1n: 0.72     # [-]           Fractional content of C in cytoplasm
-      p_pe_R1p: 0.832     # [-]           Fractional content of C in cytoplasm
+      p_pe_R1p: 0.832    # [-]           Fractional content of C in cytoplasm
+      p_fX1z: 0.030      # [-]           fraction of colored labile DOC      
     initialization:
       c: 1.0                             # carbon (mg C/m^3)
       n: 0.0167                          # nitrogen (mmol N/m^3)
-      p: 0.00185                        # phosphate (mmol N/m^3)
+      p: 0.00185                         # phosphate (mmol N/m^3)
     coupling:
       O2o:   O2/o                        # Oxygen (mmol O2/m^3)
       O3c:   O3/c                        # dissolved inorganic carbon (mg C/m^3)
@@ -843,28 +864,33 @@ instances:
     long_name: pelagic chemistry
     model: ogs/PelChem
     parameters:
-      p_clO2o:  10.0       # [mmolO2/m3]  Half-saturation O2 concentration for nitrification and reoxidation
-      p_clN6r:   1.0       # [mmolHS/m3]  Half-saturation concentration of reduction equivalents for denitrification[mmolO2/m3]
-      p_sN4N3:  0.01       # [1/d]        Specific nitrification rate at 10 degC
-      p_q10N4N3: 2.367     # [-]         Q10 factor for nitrification/denit
-      p_qon_nitri: 2.0     # [mmolO2/mmolN] stoichiometric coefficient for nitrification
+      p_clO2o:  10.0       # [mmolO2/m3]      Half-saturation O2 concentration for nitrification and reoxidation
+      p_clN6r:   1.0       # [mmolHS/m3]      Half-saturation concentration of reduction equivalents for denitrification[mmolO2/m3]
+      p_sN4N3:  0.01       # [1/d]            Specific nitrification rate at 10 degC
+      p_q10N4N3: 2.367     # [-]              Q10 factor for nitrification/denit
+      p_qon_nitri: 2.0     # [mmolO2/mmolN]   stoichiometric coefficient for nitrification
       p_qro: 0.5           # [mmolHS-/mmolO2] Stoichiometric coefficient for anaerobic reactions
-      p_sN3O4n: 0.35       # [1/d]        Specific denitrification rate
-      p_rPAo: 1.0          # [mmolO2/m3/d] Reference anoxic mineralization rate
-      p_qon_dentri: 1.25   # [mmolO2/mmolN] Stoichiometric coefficient for denitrification
-      p_rOS: 0.05          # [1/d]        Specific reoxidation rate of reduction equivalents
-      p_sR6N5: 0.1         # [1/d]        Specific remineralization rate of biogenic silica
-      p_q10R6N5: 1.49      # [-]          Q10 factor for biogenic silica
-      p_rX1c: 0.03         #[1/d]         degradation rate X1c
-      p_rX2c: 0.03         #[1/d]         degradation rate X2c
-      p_rX3c: 0.00003      #[1/d]         degradation rate X3c
-      p_Icdom: 60.0        #[uE m-2 s-1]  light threshold for CDOM bleaching
-      p_Esource: 6         #[5 or 6]      source of light for CDOM bleaching, 5=spectral, 6=mono
+      p_sN3O4n: 0.35       # [1/d]            Specific denitrification rate
+      p_rPAo: 1.0          # [mmolO2/m3/d]    Reference anoxic mineralization rate
+      p_qon_dentri: 1.25   # [mmolO2/mmolN]   Stoichiometric coefficient for denitrification
+      p_rOS: 0.05          # [1/d]            Specific reoxidation rate of reduction equivalents
+      p_sR6N5: 0.1         # [1/d]            Specific remineralization rate of biogenic silica
+      p_q10R6N5: 1.49      # [-]              Q10 factor for biogenic silica
+      p_bX1c: 0.167        # [1/d]            photodegradation (bleaching) rate X1c
+      p_bX2c: 0.167        # [1/d]            photodegradation (bleaching) rate X2c
+      p_bX3c: 0.00119      # [1/d]            photodegradation (bleaching) rate X3c
+      p_IX1: 60.0          # [uE m-2 s-1]     light threshold for X1c bleaching
+      p_IX2: 60.0          # [uE m-2 s-1]     light threshold for X2c bleaching
+      p_IX3: 50.0          # [uE m-2 s-1]     light threshold for X3c bleaching
+      p_rX3c: 0.00003      # [1/d]            remineralization rate X3c and R3c
+      p_q10X: 2.95         # [-]              q10 for CDOM degradation
+      p_Esource: 6         # [5 or 6]         source of light for CDOM bleaching, 5=spectral, 6=mono
     initialization:
     coupling:
       N3n: N3/n                                            # nitrate (mmol N/m^3)
       N4n: N4/n                                            # ammonium (mmol N/m^3)
       O2o: O2/o                                            # oxygen (mmol O_2/m^3)
+      O3c: O3/c                                            # DIC
       O3h: O3h/h                                           # alkalinity (mmol /m^3)
       O4n: O4/n                                            # N2 (mmol N/m^3)
       N6r: N6/r                                            # reduction equivalent (mmol HS/m^3)
@@ -891,9 +917,3 @@ instances:
       OCalc: O3/OCalc                               # calcite saturation (-)
       O3c: O3/c                                     # total dissolved inorganic carbon (mgC/m^3)
       O3h: O3h/h                                     # alkalinity (mmol/m^3)
-
-
-
-   
-
-

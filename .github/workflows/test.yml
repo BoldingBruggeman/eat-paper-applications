@@ -6,7 +6,7 @@ jobs:
         fail-fast: false
         matrix:
           os: ["ubuntu-latest", "macos-latest", "windows-latest"]
-          python-version: ["3.8", "3.9", "3.10"]
+          python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
       name: ${{ matrix.os }}-python-${{ matrix.python-version }}
       runs-on: ${{ matrix.os }}
       defaults:
@@ -30,4 +30,6 @@ jobs:
           cd Variational/Free
           ./launcher.sh
           cd ../BFMvar
+          ./launcher.sh
+          cd ../FiguresScripts
           ./launcher.sh

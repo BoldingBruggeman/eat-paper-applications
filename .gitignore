@@ -1,0 +1,12 @@
+result.nc
+restart.nc
+fabm_*.log
+fabm_*.gv
+/Variational/FiguresScripts/FIGURES/BFMvar/*.png
+gotm_????.stdout
+gotm_????.stderr
+da_variables.dat
+*.pyc
+/Variational/BFMvar/OUTNC
+/Variational/BFMvar/result_0001.nc
+/Variational/BFMvar/restart_0001.nc

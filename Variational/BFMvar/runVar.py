@@ -39,7 +39,7 @@ experiment.add_observations(var_surf,OBS_FILE_SAT)
 
 
 # Filter
-filter = eatpy.PDAF(eatpy.pdaf.FilterType._3DVar, subtype=0, type_opt=3)
+filter = eatpy.PDAF(eatpy.pdaf.FilterType._3DVar, subtype=0, type_opt=1)
 
 
 # Run
