@@ -43,7 +43,7 @@ jobs:
       - name: "Upload figures"
         uses: actions/upload-artifact@v3
         with:
-          name: results
+          name: ${{ matrix.os }}-py${{ matrix.python-version }}-figures
           path: |
             Variational/FiguresScripts/FIGURES/BFMvar/*.png
             Parameters/*.png
