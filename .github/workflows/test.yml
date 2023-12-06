@@ -35,6 +35,7 @@ jobs:
           ./launcher.sh
       - name: "Application: Parameters"
         run: |
+          conda install -c conda-forge scipy
           conda activate eat
           cd Parameters
           ./launcher.sh
