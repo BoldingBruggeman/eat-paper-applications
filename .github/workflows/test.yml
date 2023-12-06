@@ -45,5 +45,5 @@ jobs:
         with:
           name: results
           path: |
-            Variational/FiguresScripts/*.png
+            Variational/FiguresScripts/FIGURES/BFMvar/*.png
             Parameters/*.png
