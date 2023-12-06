@@ -20,6 +20,7 @@ jobs:
         with:
           auto-update-conda: true
           python-version: ${{ matrix.python-version }}
+          activate-environment: eat
       - name: Install EAT
         run: |
           conda create -n eat -c bolding-bruggeman -c conda-forge -y -q eatpy
@@ -35,7 +36,7 @@ jobs:
           ./launcher.sh
       - name: "Application: Parameters"
         run: |
-          conda install -c conda-forge scipy
+          conda install -n eat -c conda-forge -y -q scipy
           conda activate eat
           cd Parameters
           ./launcher.sh
