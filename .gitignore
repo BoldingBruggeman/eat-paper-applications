@@ -16,3 +16,4 @@ L4_surface_daily_mean_16.06*.nc
 /Parameters/restart_????.nc
 fabm_????.yaml
 gotm_????.yaml
+/Parameters/*.png

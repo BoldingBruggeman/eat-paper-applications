@@ -38,4 +38,10 @@ jobs:
           conda activate eat
           cd Parameters
           ./launcher.sh
-  
+      - name: "Upload figures"
+        uses: actions/upload-artifact@v3
+        with:
+          name: results
+          path: |
+            Variational/FiguresScripts/*.png
+            Parameters/*.png

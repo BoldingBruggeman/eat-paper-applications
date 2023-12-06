@@ -4,7 +4,7 @@ import numpy as np
 import datetime
 
 # state variables that the DA scheme is allowed to manipulate
-kept_vars = ["P1_Chl", "P1_c", "P1_p", "P1_n", "P1_s"]
+kept_vars = ["P1_Chl", "P1_c", "P1_p", "P1_n", "P1_s", "instances_P1_parameters_sum"]
 list_positive=kept_vars
 
 # state variables that need to be log-transformed
@@ -45,6 +45,7 @@ class MyPlugin(eatpy.shared.Plugin):
             info["data"][...] = 10. ** info["data"]
 
         SMALL=1.0e-8
+        MIN_SPREAD = 0.15
 
         for info in self.perturbvars:
             start, stop = info["start"], info["stop"]
@@ -63,18 +64,18 @@ class MyPlugin(eatpy.shared.Plugin):
 
             if len(np.shape(info["data"]))==2:
                 ens_position_surface = info["data"][:,-1] - np.mean(info["data"][:,-1])   # what is the mean spread between ens mem at the surface?
-                if np.mean(np.abs(ens_position_surface)) < 0.15*np.mean(info["data"][:,-1]):  # if it's less than 15% of the mean then inflate it to 15%
-                    print("Increasing spread of the ensemble")
+                if np.mean(np.abs(ens_position_surface)) < MIN_SPREAD*np.mean(info["data"][:,-1]):  # if it's less than 15% of the mean then inflate it to 15%
+                    self.logger.info("Increasing spread of the ensemble")
                     for depth in range(0,np.shape(info["data"])[1]):
                         ens_position = info["data"][:,depth] - np.mean(info["data"][:,depth])    # at each depth find the member position relative to the mean 
-                        coeff =  0.15*(np.mean(np.abs(ens_position))/np.mean(np.abs(ens_position_surface)))*np.mean(info["data"][:,depth])/np.mean(np.abs(ens_position))  # this inflates each member to the distance that on average will be N% of the mean, where N scales with depth as the ensemble spread... At the surface by definition N=15.
+                        coeff =  MIN_SPREAD*(np.mean(np.abs(ens_position))/np.mean(np.abs(ens_position_surface)))*np.mean(info["data"][:,depth])/np.mean(np.abs(ens_position))  # this inflates each member to the distance that on average will be N% of the mean, where N scales with depth as the ensemble spread... At the surface by definition N=15.
                         for mem in range(0,np.shape(info["data"])[0]):
                             info["data"][mem,depth] = np.mean(info["data"][:,depth]) + coeff*ens_position[mem]   # inflation step
             elif len(np.shape(info["data"]))==1:
                 ens_position_surface = info["data"] - np.mean(info["data"])   # what is the mean spread between ens mem at the surface
-                if np.mean(np.abs(ens_position_surface)) < 0.15*np.mean(info["data"]):  # if it's less than 15% of the mean then inflate it to 15%
-                    print("Increasing spread of the ensemble")
-                    coeff =  0.15*np.mean(info["data"])/np.mean(np.abs(ens_position_surface))
+                if np.mean(np.abs(ens_position_surface)) < MIN_SPREAD*np.mean(info["data"]):  # if it's less than 15% of the mean then inflate it to 15%
+                    self.logger.info("Increasing spread of the ensemble")
+                    coeff =  MIN_SPREAD*np.mean(info["data"])/np.mean(np.abs(ens_position_surface))
                     for mem in range(0,np.shape(info["data"])[0]):
                         info["data"][mem] = np.mean(info["data"]) + coeff*ens_position_surface[mem]   # inflation step
 
@@ -84,5 +85,5 @@ class MyPlugin(eatpy.shared.Plugin):
             stop=start + self.vars[name]['length']
             var = state[:, start:stop]  # note: the first axis is for the ensemble members
             if name in list_positive:
-                print("Number of negative values: ", len(var[var<0]))
+                self.logger.info(f"Number of negative values in {name}: {len(var[var<0])}")
                 var[var<0] = SMALL
