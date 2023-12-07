@@ -25,9 +25,12 @@ jobs:
         run: |
           conda create -n eat -c bolding-bruggeman -c conda-forge -y -q eatpy
           conda install -n eat -c conda-forge -y -q jupyterlab ipympl netcdf4
+      - name: "Application: Ensemble"
+        run: |
+          cd Ensemble
+          ./launcher.sh
       - name: "Application: Variational"
         run: |
-          conda activate eat
           cd Variational/Free
           ./launcher.sh
           cd ../BFMvar
@@ -37,7 +40,6 @@ jobs:
       - name: "Application: Parameters"
         run: |
           conda install -n eat -c conda-forge -y -q scipy
-          conda activate eat
           cd Parameters
           ./launcher.sh
       - name: "Upload figures"
@@ -45,5 +47,6 @@ jobs:
         with:
           name: ${{ matrix.os }}-py${{ matrix.python-version }}-figures
           path: |
+            Ensemble/*.png
             Variational/FiguresScripts/FIGURES/BFMvar/*.png
             Parameters/*.png
