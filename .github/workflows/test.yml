@@ -24,7 +24,7 @@ jobs:
       - name: Install EAT
         run: |
           conda create -n eat -c bolding-bruggeman -c conda-forge -y -q eatpy
-          conda install -n eat -c conda-forge -y -q jupyterlab ipympl netcdf4
+          conda install -n eat -c conda-forge -y -q jupyterlab ipympl netcdf4 cmocean
       - name: "Application: Ensemble"
         run: |
           cd Ensemble
