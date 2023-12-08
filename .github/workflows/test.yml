@@ -28,7 +28,7 @@ jobs:
       - name: "Application: Ensemble"
         run: |
           cd Ensemble
-          ./launcher.sh
+          ipython --gui qt -c "%run experiment.ipynb"
       - name: "Application: Variational"
         run: |
           cd Variational/Free
