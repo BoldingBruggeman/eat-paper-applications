@@ -32,16 +32,22 @@ jobs:
       - name: "Application: Variational"
         run: |
           cd Variational/Free
-          ./launcher.sh
+          eat-gotm
           cd ../BFMvar
-          ./launcher.sh
+          mkdir -p OUTNC
+          mpiexec -n 1 python runVar.py : -n 1 eat-gotm
           cd ../FiguresScripts
           ./launcher.sh
       - name: "Application: Parameters"
         run: |
           conda install -n eat -c conda-forge -y -q scipy
           cd Parameters
-          ./launcher.sh
+          cp restart_01112014.nc restart.nc
+          eat-gotm
+          python perturb_model.py
+          cp restart_01112014.nc restart.nc
+          mpiexec -n 1 python run.py : -n 2 eat-gotm --separate_gotm_yaml
+          ipython --gui qt -c "%run plot.ipynb"
       - name: "Upload figures"
         uses: actions/upload-artifact@v3
         with:
