@@ -51,12 +51,7 @@ To run this example:
 
 To run this example:
 
-1. Enter the `Parameters` subdirectory (`cd Parameters`)
-2. Copy the initial state from `restart_01112014.nc` (Linux/Mac: `cp restart_01112014.nc restart.nc`, Windows: `copy restart_01112014.nc restart.nc`)
-3. Perform a free run by executing `eat-gotm`. NB after this completes, `restart.nc` contains the model state at the end of the free run.
-4. Create the ensemble: `python perturb_model.py`
-5. Copy the initial state from `restart_01112014.nc` (Linux/Mac: `cp restart_01112014.nc restart.nc`, Windows: `copy restart_01112014.nc restart.nc`)
-6. Perform the data assimilation experiment: `mpiexec -n 1 python run.py : -n 50 eat-gotm --separate_gotm_yaml`
-7. Start JupyterLab (`jupyter lab`)
-8. Open the notebook `plot.ipynb`
-9. Execute the notebook cell-by-cell
+1. go to the `Parameters` subdirectory (`cd Ensemble`)
+2. start JupyterLab (`jupyter lab`)
+3. open the notebook `experiment.ipynb`
+4. customize the ensemble size as desired (`N` in the first cell), then execute the notebook cell-by-cell
