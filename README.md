@@ -36,6 +36,7 @@ To run this example:
 2. Perform the data assimilation experiment:
    ```
    cd Variational/BFMvar
+   mkdir -p OUTNC
    mpiexec -n 1 python runVar.py : -n 1 eat-gotm
    ```
    (go back up the directory tree with `cd ../..`)
