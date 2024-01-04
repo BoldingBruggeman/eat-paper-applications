@@ -51,7 +51,7 @@ To run this example:
 
 To run this example:
 
-1. go to the `Parameters` subdirectory (`cd Ensemble`)
+1. go to the `Parameters` subdirectory (`cd Parameters`)
 2. start JupyterLab (`jupyter lab`)
 3. open the notebook `experiment.ipynb`
 4. customize the ensemble size as desired (`N` in the first cell), then execute the notebook cell-by-cell
