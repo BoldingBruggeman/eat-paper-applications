@@ -1,5 +1,6 @@
-import eatpy
 import datetime
+import os
+import eatpy
 from myPlugins import ogs3dvar_base
 
 
@@ -30,6 +31,7 @@ experiment.add_plugin(ogs3dvar_base.Chl())
 
 ## aft bef ouptut
 OUTDIR = 'OUTNC'
+os.makedirs(OUTDIR, exist_ok=True)
 outfile = OUTDIR + '/DAout.nc'
 experiment.add_plugin(eatpy.plugins.output.NetCDF(outfile))
 

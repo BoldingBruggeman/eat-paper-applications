@@ -5,6 +5,7 @@ from typing import Tuple, List, Optional
 import numpy as np
 
 import netCDF4
+import matplotlib.dates
 
 
 def read_0d_observations(path: str) -> np.ndarray:
@@ -52,7 +53,7 @@ def read_ensemble_result(
     return time, z, np.array(results), long_name, units
 
 
-def plot_0d_timeseries(ax, time, values, obs):
+def plot_0d_timeseries(ax, time, values, obs, label: str = "model", extra_series=[]):
     low = obs[:, 1] - obs[:, 2]
     high = obs[:, 3] - obs[:, 1]
     ax.errorbar(
@@ -66,8 +67,15 @@ def plot_0d_timeseries(ax, time, values, obs):
         zorder=-1,
         label="observations",
     )
-    (series,) = ax.plot_date(time, values, "-", color="C0", label="model")
+    icolor = 0
+    for extra_label, extra_values in extra_series:
+        ax.plot_date(time, extra_values, "-", color=f"C{icolor}", label=extra_label)
+        icolor += 1
+    (series,) = ax.plot_date(time, values, "-", color=f"C{icolor}", label=label)
     ax.set_xlim(time[0], time[-1])
+    ax.xaxis.set_major_formatter(
+        matplotlib.dates.ConciseDateFormatter(ax.xaxis.get_major_locator())
+    )
     ax.grid()
     ax.legend()
     return series
@@ -80,9 +88,12 @@ def plot_1d_timeseries(ax, time, z, values, *args, cax=None, **kwargs):
     cb = fig.colorbar(pc, cax=cax)
     ax.set_ylabel("depth (m)")
     ax.xaxis.axis_date()
+    ax.set_xlim(time[0], time[-1])
+    ax.xaxis.set_major_formatter(
+        matplotlib.dates.ConciseDateFormatter(ax.xaxis.get_major_locator())
+    )
     ax.grid()
     ax.set_ylim(z.max(), z.min())
-    ax.set_xlim(time[0], time[-1])
     return pc, cb
 
 
@@ -149,9 +160,12 @@ def plot_0d_ensemble_timeseries(
 
     median = np.median(ens, axis=0)
     ax.plot_date(time, median, "-", color=f"C{icolor}", label=label)
-    ax.set_xlim(time[0], time[-1])
     ax.grid()
     ax.legend()
+    ax.set_xlim(time[0], time[-1])
+    ax.xaxis.set_major_formatter(
+        matplotlib.dates.ConciseDateFormatter(ax.xaxis.get_major_locator())
+    )
 
 
 def plot_1d_ensemble_timeseries(ax, time, z, ens, *args, cax=None, **kwargs):
@@ -162,6 +176,9 @@ def plot_1d_ensemble_timeseries(ax, time, z, ens, *args, cax=None, **kwargs):
     ax.set_ylabel("depth (m)")
     ax.grid()
     ax.xaxis.axis_date()
-    ax.set_ylim(z.max(), z.min())
     ax.set_xlim(time[0], time[-1])
+    ax.xaxis.set_major_formatter(
+        matplotlib.dates.ConciseDateFormatter(ax.xaxis.get_major_locator())
+    )
+    ax.set_ylim(z.max(), z.min())
     return pc, cb

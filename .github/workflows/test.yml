@@ -31,13 +31,8 @@ jobs:
           ipython --gui qt -c "%run experiment.ipynb"
       - name: "Application: Variational"
         run: |
-          cd Variational/Free
-          eat-gotm
-          cd ../BFMvar
-          mkdir -p OUTNC
-          mpiexec -n 1 python runVar.py : -n 1 eat-gotm
-          cd ../FiguresScripts
-          ./launcher.sh
+          cd Variational
+          ipython --gui qt -c "%run experiment.ipynb"
       - name: "Application: Parameters"
         run: |
           conda install -n eat -c conda-forge -y -q scipy
@@ -49,5 +44,5 @@ jobs:
           name: ${{ matrix.os }}-py${{ matrix.python-version }}-figures
           path: |
             Ensemble/*.png
-            Variational/FiguresScripts/FIGURES/BFMvar/*.png
+            Variational/*.png
             Parameters/*.png
