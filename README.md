@@ -22,5 +22,6 @@ conda install -n eat -c conda-forge jupyterlab ipympl netcdf4 cmocean scipy
 To get started with the example applications:
 
 1. Activate the EAT environment by executing `conda activate eat`
-2. Open the main notebook by executing `jupyter lab start.ipynb`. The notebook should now open in your browser.
+2. Open JupyterLab by executing `jupyter lab`. The JupyterLab environment should now open in your browser.
+3. Within JupyterLab, open the `start.ipynb` notebook.
 3. Click one of the three examples. In the notebook that opens, execute the cells one by one.
