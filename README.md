@@ -24,4 +24,4 @@ To get started with the example applications:
 1. Activate the EAT environment by executing `conda activate eat`
 2. Open JupyterLab by executing `jupyter lab`. The JupyterLab environment should now open in your browser.
 3. Within JupyterLab, open the `start.ipynb` notebook.
-3. Click one of the three examples. In the notebook that opens, execute the cells one by one.
+4. Click one of the three examples. In the notebook that opens, execute the cells one by one.
