@@ -39,7 +39,7 @@ jobs:
           cd Parameters
           ipython --gui qt -c "%run experiment.ipynb"
       - name: "Upload figures"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-py${{ matrix.python-version }}-figures
           path: |
