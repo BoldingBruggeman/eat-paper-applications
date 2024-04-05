@@ -1,6 +1,7 @@
 import datetime
 import os.path
 from typing import Tuple, List, Optional
+import pickle
 
 import numpy as np
 
@@ -182,3 +183,14 @@ def plot_1d_ensemble_timeseries(ax, time, z, ens, *args, cax=None, **kwargs):
     )
     ax.set_ylim(z.max(), z.min())
     return pc, cb
+
+
+def seed(path: str):
+    if os.path.isfile(path):
+        with open(path, "rb") as f:
+            seed = pickle.load(f)
+    else:
+        seed = np.random.SeedSequence()
+        with open(path, "wb") as f:
+            pickle.dump(seed.entropy, f)
+    return seed
