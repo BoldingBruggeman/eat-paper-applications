@@ -10,7 +10,7 @@ First install [EAT](https://github.com/BoldingBruggeman/eat/wiki). The easiest w
 to create an isolated `eat` environment with the pre-compiled `eatpy` package:
 
 ```
-conda create -n eat -c bolding-bruggeman -c conda-forge eatpy
+conda create -n eat -c conda-forge eatpy
 ```
 
 Then add the Python packages that we will use for post-processing:
