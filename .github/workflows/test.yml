@@ -28,6 +28,9 @@ jobs:
         run: |
           conda create -n eat -c conda-forge -y -q eatpy
           conda install -n eat -c conda-forge -y -q jupyterlab ipympl netcdf4 cmocean
+      - name: "Test MPI and oversubscription"
+        run: |
+          mpiexec -n 3 eat-gotm -h
       - name: "Application: Ensemble"
         run: |
           cd Ensemble
