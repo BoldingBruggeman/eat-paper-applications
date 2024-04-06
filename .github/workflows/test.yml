@@ -32,7 +32,7 @@ jobs:
         run: |
           cd Ensemble
           mkdir $HOME/tmp
-          export TMP=$HOME/tmp
+          export TMPDIR=$HOME/tmp
           mpiexec -n 3 eat-gotm
       - name: "Application: Ensemble"
         run: |
