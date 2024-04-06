@@ -13,8 +13,9 @@ jobs:
         run:
           shell: bash -el {0}
       env:
-        OMPI_MCA_rmaps_base_oversubscribe: 1
-        PRTE_MCA_rmaps_default_mapping_policy: :oversubscribe
+        OMPI_MCA_rmaps_base_oversubscribe: 1                   # enable OpenMPI oversubscribe (old convention)
+        PRTE_MCA_rmaps_default_mapping_policy: :oversubscribe  # enable OpenMPI oversubscribe (new convention)
+        TMPDIR: /tmp                                           # workaround too-long-paths for OpenMPI on Mac
       steps:
       - name: Clone
         uses: actions/checkout@v4
@@ -31,9 +32,8 @@ jobs:
       - name: "Test MPI and oversubscription"
         run: |
           cd Ensemble
-          mkdir $HOME/tmp
-          export TMPDIR=$HOME/tmp
           mpiexec -n 3 eat-gotm
+          rm *.nc
       - name: "Application: Ensemble"
         run: |
           cd Ensemble
