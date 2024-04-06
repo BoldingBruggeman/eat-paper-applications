@@ -31,6 +31,8 @@ jobs:
       - name: "Test MPI and oversubscription"
         run: |
           cd Ensemble
+          mkdir $HOME/tmp
+          export TMP=$HOME/tmp
           mpiexec -n 3 eat-gotm
       - name: "Application: Ensemble"
         run: |
