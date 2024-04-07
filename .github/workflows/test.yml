@@ -34,7 +34,7 @@ jobs:
           cd Ensemble
           python ../.github/workflows/generate_ensemble.py
           mpiexec -n 1 python assimilate_sst.py : -n 2 eat-gotm --separate_gotm_yaml
-          rm *.nc gotm_????.yaml
+          rm -v *.nc gotm_????.yaml
       - name: "Application: Ensemble"
         run: |
           cd Ensemble
