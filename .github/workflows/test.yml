@@ -32,8 +32,9 @@ jobs:
       - name: "Test MPI and oversubscription"
         run: |
           cd Ensemble
-          mpiexec -n 3 eat-gotm
-          rm *.nc
+          python ../.github/workflows/generate_ensemble.py
+          mpiexec -n 1 python assimilate_sst.py : -n 2 eat-gotm --separate_gotm_yaml
+          rm *.nc gotm_????.yaml fabm_????.yaml
       - name: "Application: Ensemble"
         run: |
           cd Ensemble
