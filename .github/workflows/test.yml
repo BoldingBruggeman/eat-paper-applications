@@ -35,6 +35,9 @@ jobs:
           python ../.github/workflows/generate_ensemble.py
           mpiexec -n 1 python assimilate_sst.py : -n 2 eat-gotm --separate_gotm_yaml
           rm -v *.nc gotm_????.yaml
+      - name: "Test notebook environment"
+        run: |
+          ipython --gui qt -c "%run  .github/workflows/test.ipynb"
       - name: "Application: Ensemble"
         run: |
           cd Ensemble
