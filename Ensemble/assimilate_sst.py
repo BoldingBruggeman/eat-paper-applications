@@ -1,4 +1,6 @@
+print('Assimilate sst')
 import eatpy
+print('Imported eatpy')
 
 experiment = eatpy.models.GOTM()
 
