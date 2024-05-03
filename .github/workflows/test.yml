@@ -34,9 +34,10 @@ jobs:
       - name: "Test MPI and oversubscription"
         run: |
           cd Ensemble
-          python ../.github/workflows/generate_ensemble.py
-          mpiexec -n 1 python assimilate_sst.py : -n 2 eat-gotm --separate_gotm_yaml
-          rm -v *.nc gotm_????.yaml
+          mkdir da_test
+          cd da_test
+          python ../../.github/workflows/generate_ensemble.py
+          mpiexec -n 1 ../da_phys/run.py : -n 2 eat-gotm --separate_gotm_yaml
       - name: "Test notebook environment"
         run: |
           ipython --gui qt -c "%run  .github/workflows/test.ipynb"
