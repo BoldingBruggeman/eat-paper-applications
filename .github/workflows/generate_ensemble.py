@@ -11,3 +11,6 @@ with gotm:
     gotm["surface/u10/scale_factor"] = rng.lognormal(mean=0.0, sigma=0.2, size=N)
     gotm["surface/v10/scale_factor"] = rng.lognormal(mean=0.0, sigma=0.2, size=N)
     gotm["turbulence/turb_param/k_min"] *= rng.lognormal(mean=0.0, sigma=0.2, size=N)
+
+# Use original biogeochemistry configuration
+shutil.copyfile("../reference/fabm.yaml", "fabm.yaml")
