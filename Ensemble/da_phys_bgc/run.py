@@ -11,8 +11,9 @@ experiment = eatpy.models.GOTM(
 filter = eatpy.PDAF(eatpy.pdaf.FilterType.ESTKF)
 
 bgc_variables = [v for v in experiment.variables if "_" in v]
-experiment.add_plugin(eatpy.plugins.select.Select(include=bgc_variables))
-
+experiment.add_plugin(
+    eatpy.plugins.select.Select(include=["temp", "salt"] + bgc_variables)
+)
 experiment.add_plugin(eatpy.plugins.check.Finite())
 experiment.add_plugin(
     eatpy.plugins.transform.Log(
@@ -24,6 +25,7 @@ experiment.add_plugin(
 )
 
 # If you comment out the two lines below, you run the ensemble only without assimilation
-experiment.add_observations("total_chlorophyll_calculator_result[-1]", "cci_chl.dat")
+experiment.add_observations("temp[-1]", "../observations/cci_sst.dat")
+experiment.add_observations("total_chlorophyll_calculator_result[-1]", "../observations/cci_chl.dat")
 
 experiment.run(filter)

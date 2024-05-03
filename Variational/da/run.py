@@ -9,7 +9,7 @@ var = "total_chlorophyll_calculator_result"
 var_surf = var + "[-1]"
 
 # Observation files
-OBSDIR = "ToAssimilate/"
+OBSDIR = "../observations"
 OBS_FILE_SAT = OBSDIR + "/nrt_chlsat.obs"
 
 # Assimilation period
@@ -30,9 +30,7 @@ experiment.add_plugin(eatpy.plugins.select.Select(include=('P?_*','total_chlorop
 experiment.add_plugin(ogs3dvar_base.Chl())
 
 ## aft bef ouptut
-OUTDIR = 'OUTNC'
-os.makedirs(OUTDIR, exist_ok=True)
-outfile = OUTDIR + '/DAout.nc'
+outfile = 'DAout.nc'
 experiment.add_plugin(eatpy.plugins.output.NetCDF(outfile))
 
 

@@ -13,7 +13,7 @@ class Chl(eatpy.pdaf.CvtHandler):
     
     # def __init__(self, dim_cvec=26, dim_cvec_ens=3, eofs_filestring: str = 'data/init/eof.', z_file: str = 'data/init/z.txt', name: str = 'OGS-3Dvar'):
     # def __init__(self, dim_cvec: Optional[int] = None, dim_cvec_ens: Optional[int] = None, eofs_filestring: str = 'data/init/eof.', z_file: str = 'data/init/z.txt', name: str = 'OGS-3Dvar'):
-    def __init__(self, dim_cvec: Optional[int] = None, dim_cvec_ens: Optional[int] = None, eofs_filestring: str = 'data/init/eof.', z_file: str = 'data/init/z.txt', name: str = 'OGS-3Dvar'):
+    def __init__(self, dim_cvec: Optional[int] = None, dim_cvec_ens: Optional[int] = None, eofs_filestring: str = '../data/init/eof.', z_file: str = '../data/init/z.txt', name: str = 'OGS-3Dvar'):
         super().__init__(dim_cvec,dim_cvec_ens)
         self.dim_cvec=26
         self.logger = logging.getLogger(name)

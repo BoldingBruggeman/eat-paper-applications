@@ -18,7 +18,7 @@ grid:
 temperature:
   method: file
   constant_value: 15.0
-  file: temp_prof_2002_2020
+  file: ../forcing/temp_prof_2002_2020
   column: 1
   two_layer:
     z_s: 30.0
@@ -33,7 +33,7 @@ temperature:
 salinity:
   method: file
   constant_value: 35.0
-  file: sal_prof_2002_2020
+  file: ../forcing/sal_prof_2002_2020
   column: 1
   two_layer:
     z_s: 30.0
@@ -66,49 +66,49 @@ surface:
   u10:
     method: file
     constant_value: 0.0
-    file: L4_meteo_2002-2020_1hours.dat
+    file: ../forcing/L4_meteo_2002-2020_1hours.dat
     column: 1
     scale_factor: 1
   v10:
     method: file
     constant_value: 0.0
-    file: L4_meteo_2002-2020_1hours.dat
+    file: ../forcing/L4_meteo_2002-2020_1hours.dat
     column: 2
     scale_factor: 1
   ssuv_method: absolute
   airp:
     method: file
     constant_value: 0.0
-    file: L4_meteo_2002-2020_1hours.dat
+    file: ../forcing/L4_meteo_2002-2020_1hours.dat
     column: 3
     scale_factor: 100.0
   airt:
     method: file
     constant_value: 0.0
-    file: L4_meteo_2002-2020_1hours.dat
+    file: ../forcing/L4_meteo_2002-2020_1hours.dat
     column: 4
   hum:
     method: file
     constant_value: 0.0
-    file: L4_meteo_2002-2020_1hours.dat
+    file: ../forcing/L4_meteo_2002-2020_1hours.dat
     column: 5
     type: dew_point
   cloud:
     method: file
     constant_value: 0.0
-    file: L4_meteo_2002-2020_1hours.dat
+    file: ../forcing/L4_meteo_2002-2020_1hours.dat
     column: 6
   precip:
     method: file
     constant_value: 0.0
-    file: L4_precip_2002-2020_1hours.dat
+    file: ../forcing/L4_precip_2002-2020_1hours.dat
     column: 1
     flux_impact: true
   calc_evaporation: true
   swr:
     method: file
     constant_value: 0.0
-    file: L4_light_2002-2020_1hours.dat
+    file: ../forcing/L4_light_2002-2020_1hours.dat
     column: 1
   longwave_radiation:
     method: clark
@@ -183,7 +183,7 @@ mimic_3d:
     dpdx:
       method: file
       constant_value: 0.0
-      file: L4_press_2002-2020_bottom.dat
+      file: ../forcing/L4_press_2002-2020_bottom.dat
       column: 2
       tidal:
         amp_1: 0.2429
@@ -193,7 +193,7 @@ mimic_3d:
     dpdy:
       method: file
       constant_value: 0.0
-      file: L4_press_2002-2020_bottom.dat
+      file: ../forcing/L4_press_2002-2020_bottom.dat
       column: 3
       tidal:
         amp_1: 0.0734
@@ -203,14 +203,14 @@ mimic_3d:
     h:
       method: file
       constant_value: 1.0
-      file: L4_press_2002-2020_bottom.dat
+      file: ../forcing/L4_press_2002-2020_bottom.dat
       column: 1
     period_1: 44714.0
     period_2: 43200.0
   zeta:
     method: file
     constant_value: 0.0
-    file: L4_z_2002-2020.dat
+    file: ../forcing/L4_z_2002-2020.dat
     column: 1
     tidal:
       period_1: 44714.0
