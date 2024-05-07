@@ -26,14 +26,12 @@ jobs:
         with:
           auto-update-conda: true
           python-version: ${{ matrix.python-version }}
+          channels: conda-forge
           activate-environment: eat
       - name: Install EAT
         run: |
-          conda create -n eat -c conda-forge -y -q eatpy python==${{ matrix.python-version }}.*
+          conda install -n eat -c conda-forge -y -q eatpy
           conda install -n eat -c conda-forge -y -q jupyterlab ipympl netcdf4 cmocean
-      #- name: Install pyqt
-      #  if: matrix.python-version == '3.8'
-      #  run: conda install -n eat -c conda-forge -y -q pyqt
       - name: "Test MPI and oversubscription"
         run: |
           cd Ensemble
