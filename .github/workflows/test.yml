@@ -29,7 +29,7 @@ jobs:
           activate-environment: eat
       - name: Install EAT
         run: |
-          conda create -n eat -c conda-forge -y -q eatpy
+          conda create -n eat -c conda-forge -y -q eatpy python==${{ matrix.python-version }}
           conda install -n eat -c conda-forge -y -q jupyterlab ipympl netcdf4 cmocean
       - name: "Test MPI and oversubscription"
         run: |
