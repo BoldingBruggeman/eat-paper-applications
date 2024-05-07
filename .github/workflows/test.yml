@@ -31,9 +31,9 @@ jobs:
         run: |
           conda create -n eat -c conda-forge -y -q eatpy python==${{ matrix.python-version }}.*
           conda install -n eat -c conda-forge -y -q jupyterlab ipympl netcdf4 cmocean
-      - name: Install pyqt
-        if: matrix.python-version == '3.8'
-        run: conda install -n eat -c conda-forge -y -q pyqt
+      #- name: Install pyqt
+      #  if: matrix.python-version == '3.8'
+      #  run: conda install -n eat -c conda-forge -y -q pyqt
       - name: "Test MPI and oversubscription"
         run: |
           cd Ensemble
@@ -43,20 +43,20 @@ jobs:
           mpiexec -n 1 python ../da_phys/run.py : -n 2 eat-gotm --separate_gotm_yaml
       - name: "Test notebook environment"
         run: |
-          ipython --gui qt -c "%run  .github/workflows/test.ipynb"
+          ipython --gui tk -c "%run  .github/workflows/test.ipynb"
       - name: "Application: Ensemble"
         run: |
           cd Ensemble
-          ipython --gui qt -c "%run experiment.ipynb"
+          ipython --gui tk -c "%run experiment.ipynb"
       - name: "Application: Variational"
         run: |
           cd Variational
-          ipython --gui qt -c "%run experiment.ipynb"
+          ipython --gui tk -c "%run experiment.ipynb"
       - name: "Application: Parameters"
         run: |
           conda install -n eat -c conda-forge -y -q scipy
           cd Parameters
-          ipython --gui qt -c "%run experiment.ipynb"
+          ipython --gui tk -c "%run experiment.ipynb"
       - name: "Upload figures"
         uses: actions/upload-artifact@v4
         with:
