@@ -1,7 +1,10 @@
 check_conservation: false
 require_initialization: true
-log: true
 instances:
+  Benthic_layer:
+    model: ogs/BenthicLayer
+    parameters:
+      p_BenDepth: 12000.0
   zenith_angle:
     model: ogs/zenith_angle
   light:
@@ -12,10 +15,6 @@ instances:
        EPS0r: 0.04                                          # background shortwave attenuation (1/m), default = 0.04
        pEIR_eow: 0.4                                        # photosynthetically active fraction of shortwave radiation (-), default = 0.5
     coupling:
-       P1chl: P1/Chl
-       P2chl: P2/Chl
-       P3chl: P3/Chl
-       P4chl: P4/Chl
        X1c: X1/c
        X2c: X2/c
        X3c: X3/c       
@@ -208,8 +207,8 @@ instances:
       p_sdchl: 0.2                          # [1/d]          Specific turnover rate for Chla 
       p_alpha_chl: 2.61e-5                  # [mgC s m2/mgChl/uE]     Initial slope of the P-E curve
       p_quantum_yield: 0.750e-3             # [mgC / uE]     Photochemical efficiency
-      p_Esource: 6                          # [1-6]          source of light for PP, 1=absorbed by P1, 5=scalar, 6=mono
-                                              
+      p_Esource: 6                          # [1-6]          source of light for PP, 1=multi, 5=scalar, 6=mono
+      p_OT: 1                               # [1-9]          type of absorption/scattering spectra
       p_qlcPPY: 0.026                       # [mgChla/mgC]   Reference quotum Chla:C 
       p_epsChla: 0.03                       # [m2/mgChla]    Chla-specific extinction coefficient
       p_tochl_relt: 0.0                     # [1/d]        Relaxation rate towards maximum Chla:C
@@ -264,21 +263,10 @@ instances:
       p_sheo:  0.0                          # [mgC/3]        Half saturation constant for extra lysis
       p_pu_ea: 0.15                         # [-]            Excreted fraction of primary production
       p_pu_ra: 0.1                          # [-]            Activity respiration fraction
-      p_switchDOC: 2                        # [1-3]          Switch for the type of DOC excretion
-                                            #  This choice must be consistent with bacteria
-                                            #     1. All DOC is released as R1c (Vichi et al., 2007)
-                                            #     2. Activity DOC is released as R2c (Vichi et al., 2004)
-                                            #   (there is no nutrient-stress excretion)
-                                            #     3. All DOC is released as R2c (Polimene et al., 2006)
+      p_switchDOC: 2                        # [1-3]          2. Activity DOC is released as R2c (Vichi et al., 2004)
 #              --------- Nutrient parameters in phytoplankton -----------------
-      p_netgrowth: .TRUE.                   # [T or F]       Logical switch for nutrient-limited growth
-                                            # .T. nutrient-balanced growth (Vichi et al.2004)
-                                            # .F. nutrient-stress carbon excretion
-                                            # (Baretta-Bekker et al.1995 and Vichi et al.2007)
-      p_limnut: 1                           #  Switch for N-P co-limitation
-                                            # 0. Geometric mean
-                                            # 1. Threshold (Liebig-like)
-                                            # 2. Combined
+      p_netgrowth: .TRUE.                   # [T or F]       .T. nutrient-balanced growth (Vichi et al.2004)
+      p_limnut: 1                           #  Switch for N-P co-limitation, 1. Threshold (Liebig-like)
 #                   ---- N limitation control ----
       p_qun: 0.025                          # [m3/mgC/d]     Membrane affinity for N
       p_lN4: 0.5                            # [mmolN/m3]     Half saturation constant for NH4 uptake preference over NO3
@@ -290,8 +278,6 @@ instances:
       p_qplc: 0.000352                      # [mmolN/mgC]    minimum phosphorus to carbon ratio (mmol P/mg C)
       p_qpcPPY: 0.000556                    # [mmolP/mgC]    Reference quotum P:C
       p_xqp: 2.0                            # [-]            Multiplication factor for luxury storage
-#                   ---- Si limitation control ----
-#     Silicon absent in this PFT                            
 #                   ---- nutrient stressed sinking ----
       p_esNI: 0.75                          # [-]            Nutrient stress threshold for sinking
       p_res: 0.0                            # [m/d]          Maximum Sinking vel city (m/d)
@@ -306,9 +292,9 @@ instances:
       p_sdchl: 0.2                          # [1/d]          Specific turnover rate for Chla 
       p_alpha_chl: 0.53e-5                  # [mgC s m2/mgChl/uE]     Initial slope of the P-E curve
       p_quantum_yield: 0.198e-3             # [mgC / uE]     Photochemical efficiency
-      p_Esource: 6                          # [1-6]          source of light for PP, 2=absorbed by P2, 5=scalar, 6=mono
-                                              
-      p_qlcPPY: 0.045                        # [mgChla/mgC]   Reference quotum Chla:C 
+      p_Esource: 6                          # [1-6]          source of light for PP, 1=multi, 5=scalar, 6=mono
+      p_OT: 2                               # [1-9]          type of absorption/scattering spectra
+      p_qlcPPY: 0.045                       # [mgChla/mgC]   Reference quotum Chla:C 
       p_epsChla: 0.03                       # [m2/mgChla]    Chla-specific extinction coefficient
       p_tochl_relt: 0.0                     # [1/d]        Relaxation rate towards maximum Chla:C
       p_EpEk_or: 0.0                        # [-]            Optimal value of E_PAR/E_K
@@ -400,7 +386,8 @@ instances:
       p_sdchl: 0.2                          # [1/d]          Specific turnover rate for Chla 
       p_alpha_chl: 3.02e-5                  # [mgC s m2/mgChl/uE]     Initial slope of the P-E curve
       p_quantum_yield: 0.990e-3             # [mgC / uE]     Photochemical efficiency
-      p_Esource: 6                          # [1-6]          source of light for PP, 3=absorbed by P3, 5=scalar, 6=mono       
+      p_Esource: 6                          # [1-6]          source of light for PP, 1=multi, 5=scalar, 6=mono
+      p_OT: 3                               # [1-9]          type of absorption/scattering spectra                                            
       p_qlcPPY: 0.014                       # [mgChla/mgC]   Reference quotum Chla:C 
       p_epsChla: 0.03                       # [m2/mgChla]    Chla-specific extinction coefficient
       p_tochl_relt: 0.0                     # [1/d]        Relaxation rate towards maximum Chla:C
@@ -452,21 +439,10 @@ instances:
       p_sheo: 100.0                         # [mgC/3]        Half saturation constant for extra lysis
       p_pu_ea: 0.20                         # [-]            Excreted fraction of primary production
       p_pu_ra: 0.1                          # [-]            Activity respiration fraction
-      p_switchDOC: 2                        # [1-3]          Switch for the type of DOC excretion
-                                            #  This choice must be consistent with bacteria
-                                            #     1. All DOC is released as R1c (Vichi et al., 2007)
-                                            #     2. Activity DOC is released as R2c (Vichi et al., 2004)
-                                            #   (there is no nutrient-stress excretion)
-                                            #     3. All DOC is released as R2c (Polimene et al., 2006)
+      p_switchDOC: 2                        # [1-3]          2. Activity DOC is released as R2c (Vichi et al., 2004)
 #              --------- Nutrient parameters in phytoplankton -----------------
-      p_netgrowth: .TRUE.                   # [T or F]       Logical switch for nutrient-limited growth
-                                            # .T. nutrient-balanced growth (Vichi et al.2004)
-                                            # .F. nutrient-stress carbon excretion
-                                            # (Baretta-Bekker et al.1995 and Vichi et al.2007)
-      p_limnut: 1                           #  Switch for N-P co-limitation
-                                            # 0. Geometric mean
-                                            # 1. Threshold (Liebig-like)
-                                            # 2. Combined
+      p_netgrowth: .TRUE.                   # [T or F]       .T. nutrient-balanced growth (Vichi et al.2004)
+      p_limnut: 1                           #  Switch for N-P co-limitation, 1. Threshold (Liebig-like)
 #                   ---- N limitation control ----
       p_qun: 0.025                          # [m3/mgC/d]     Membrane affinity for N
       p_lN4: 1.0                            # [mmolN/m3]     Half saturation constant for NH4 uptake preference over NO3
@@ -478,8 +454,6 @@ instances:
       p_qplc: 0.0004288                     # [mmolN/mgC]    minimum phosphorus to carbon ratio (mmol P/mg C)
       p_qpcPPY: 0.000786                    # [mmolP/mgC]    Reference quotum P:C
       p_xqp: 2.0                            # [-]            Multiplication factor for luxury storage
-#                   ---- Si limitation control ----
-#     Silicon absent in this PFT                            
 #                   ---- nutrient stressed sinking ----
       p_esNI: 0.75                           # [-]            Nutrient stress threshold for sinking
       p_res: 2.5                            # [m/d]          Maximum Sinking vel city (m/d)
@@ -493,7 +467,8 @@ instances:
       p_sdchl: 0.2                          # [1/d]          Specific turnover rate for Chla 
       p_alpha_chl: 0.68e-5                  # [mgC s m2/mgChl/uE]     Initial slope of the P-E curve
       p_quantum_yield: 0.257e-3             # [mgC / uE]     Photochemical efficiency
-      p_Esource: 6                          # [1-6]          source of light for PP, 4=absorbed by P4, 5=scalar, 6=mono
+      p_Esource: 6                          # [1-6]          source of light for PP, 1=multi, 5=scalar, 6=mono
+      p_OT: 4                               # [1-9]          type of absorption/scattering spectra
       p_qlcPPY: 0.019                       # [mgChla/mgC]   Reference quotum Chla:C 
       p_epsChla: 0.03                       # [m2/mgChla]    Chla-specific extinction coefficient
       p_tochl_relt: 0.0                     # [1/d]          Relaxation rate towards maximum Chla:C
@@ -885,13 +860,19 @@ instances:
       p_rX3c: 0.00003      # [1/d]            remineralization rate X3c and R3c
       p_q10X: 2.95         # [-]              q10 for CDOM degradation
       p_Esource: 6         # [5 or 6]         source of light for CDOM bleaching, 5=spectral, 6=mono
+      p_use_benthic: 0     #[0=F or 1=T]  activate first-order benthic return
+      p_TauC:        1.0   #[d]           remineralization of Carbon in detritus
+      p_TauN:        0.5   #[d]           remineralization of Nitrogen in detritus
+      p_TauP:        1.0   #[d]           remineralization of Phosphorus in detritus
+      p_Amm_rem:     0.2   #[0 to 1]      fraction of detritus remineralized to NH4      
     initialization:
     coupling:
+      N1p: N1/p                                            # phosphate (mmol P/m^3)    
       N3n: N3/n                                            # nitrate (mmol N/m^3)
       N4n: N4/n                                            # ammonium (mmol N/m^3)
       O2o: O2/o                                            # oxygen (mmol O_2/m^3)
-      O3c: O3/c                                            # DIC
       O3h: O3h/h                                           # alkalinity (mmol /m^3)
+      O3c: O3/c                                            # DIC      
       O4n: O4/n                                            # N2 (mmol N/m^3)
       N6r: N6/r                                            # reduction equivalent (mmol HS/m^3)
       N5s: N5/s                                            # silicate (mmol Si/m^3)
@@ -900,7 +881,11 @@ instances:
       X3c: X3/c                                            # cdom X3c (mgC/m^3)
       R3c: R3/c                                            # cdom R3c (mgC/m^3)
       R6s: R6/s                                            # POSi (mgSi/m3)
+      R6c: R6/c                                            # POC  (mgC/m3)
+      R6n: R6/n                                            # PON  (mmolN/m3)
+      R6p: R6/p                                            # POP (mmolP/m3)
       PAR_tot: light/parEIR
+      isBen:  Benthic_layer/isBen
 ##  --------------------- CalciteDissolution
   O5:
 #    use: false
@@ -917,3 +902,4 @@ instances:
       OCalc: O3/OCalc                               # calcite saturation (-)
       O3c: O3/c                                     # total dissolved inorganic carbon (mgC/m^3)
       O3h: O3h/h                                     # alkalinity (mmol/m^3)
+      

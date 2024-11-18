@@ -89,10 +89,10 @@ class Chl(eatpy.pdaf.CvtHandler):
         # self.logger.info(f'ANNA   !!!!! iter = {iter}')
         if iter==1:
             # self.totchl=np.zeros(self.nz)
-            self.start = self.variables['total_chlorophyll_calculator_result']['start']
-            self.stop = self.start + self.variables['total_chlorophyll_calculator_result']['length']
+            self.start = self.variables['total_chlorophyll']['start']
+            self.stop = self.start + self.variables['total_chlorophyll']['length']
             self.totchl = state[self.start:self.stop]
-            # self.totchl = self.variables['total_chlorophyll_calculator_result']["data"]
+            # self.totchl = self.variables['total_chlorophyll']["data"]
             
         #if abs(iter)<10:    
         #    self.logger.info('cvt: state = {}'.format(state[:10]))
@@ -129,8 +129,8 @@ class Chl(eatpy.pdaf.CvtHandler):
             
         # if True: #iter==1:
         #     self.totchl=np.zeros(self.nz)
-        #     start = self.variables['total_chlorophyll_calculator_result']['start']
-        #     stop = start + self.variables['total_chlorophyll_calculator_result']['length']
+        #     start = self.variables['total_chlorophyll']['start']
+        #     stop = start + self.variables['total_chlorophyll']['length']
         #     self.totchl = state[start:stop]
             
         #if abs(iter)<10:    
